@@ -1,6 +1,10 @@
 import pandas as pd
 import mplfinance as mpf
+import matplotlib.pyplot as plt
+from matplotlib.dates import date2num
 from matplotlib.patches import Rectangle
+
+
 
 # Load the existing dataset
 file_path = 'NAs100_2024.csv'
@@ -12,7 +16,6 @@ data.set_index('Date', inplace=True)
 
 # Save the dataset again to ensure correct format
 data.to_csv('NAs100_2024.csv')
-
 
 def detect_fvg(data):
     fvg_data = []
@@ -33,14 +36,14 @@ def plot_fvg(data, fvg_data):
         if ax.get_ylabel() == 'Price':
             for fvg in fvg_data:
                 rect = Rectangle(
-                    (mpf.date2num(fvg['start']), fvg['fvg_close']),
-                    mpf.date2num(fvg['end']) - mpf.date2num(fvg['start']),
+                    (date2num(fvg['start']), fvg['fvg_close']),
+                    date2num(fvg['end']) - date2num(fvg['start']),
                     fvg['fvg_open'] - fvg['fvg_close'],
-                    linewidth=1, edgecolor='r', facecolor='none'
+                    linewidth=1, edgecolor='g', facecolor='none'
                 )
                 ax.add_patch(rect)
 
-    mpf.show()
+    plt.show()
 
 # Read the corrected CSV file
 corrected_file_path = 'NAs100_2024.csv'
